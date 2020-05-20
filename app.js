@@ -3,6 +3,8 @@ var express = require("express");
 var morgan = require("morgan");
 var path = require("path");
 var bodyParser = require("body-parser");
+var mongoose = require("mongoose");
+var Message = require("./schema/Message");
 
 var app = express();
 
@@ -12,7 +14,17 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use("/static", express.static(path.join(__dirname, "styles")));
 
 
+
 app.get("/", function(req, res){
+
+    mongoose.connect("mongodb://localhost:27017/charapp", function(err){
+        if(err){
+            console.log(err);
+        }else{
+            console.log("successfully connect to MongoDB");
+        }
+    });
+
     return res.render("index", {title: "Hello World"});
     // return res.send("Hello world");
 });
